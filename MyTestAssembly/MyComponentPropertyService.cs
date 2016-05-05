@@ -22,7 +22,7 @@ namespace MyTestAssembly
 		{
 			IEnumerable<PropertyDescriptor> retVal = TypeHelper.GetAvailableProperties(designItem.Component);
 
-			retVal = retVal.Where(c => c.Name == "Foreground");
+			retVal = retVal.Where(pd => pd.Attributes.OfType<MyShowInDesignerAttribute>().Count() != 0);
 
 			return retVal;
 		}

@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 namespace MyTestAssembly
 {
 	/// <summary>
-	/// Represents all of the different things that can be dragged onto the design surface.
+	/// Use the attribute to explicitely say that a property should show up in our designer.
 	/// </summary>
-	public enum MyFooEnum
+	public class MyShowInDesignerAttribute : Attribute
 	{
-		MyWidget,
-		TextWidget
+		public MyShowInDesignerAttribute()
+		{
+		}
 	}
 }

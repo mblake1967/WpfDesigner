@@ -18,6 +18,8 @@ using MyTestAssembly;
 using ICSharpCode.WpfDesign.Designer.Xaml;
 using ICSharpCode.WpfDesign.Designer.PropertyGrid;
 using ICSharpCode.WpfDesign;
+using ICSharpCode.WpfDesign.Designer.OutlineView;
+using System.Reflection;
 
 namespace MyDesigner
 {
@@ -50,12 +52,32 @@ x:Name=""rootElement"" Background=""White""></Grid>";
 			//Load the design surface with some minimal XAML that we have hardcoded.
 			using (var xmlReader = XmlReader.Create(new StringReader(xaml)))
 			{
-				MyDesignerModel.Instance.DesignSurface.LoadDesigner(xmlReader, new XamlLoadSettings());
+				//Use the load settings to add our MyDisplaySizeExtension extension that shows a new adorner.
+				Assembly extAsm = Assembly.GetAssembly(typeof(MyDisplaySizeExtension));
+
+				XamlLoadSettings loadSettings = new XamlLoadSettings();
+				loadSettings.DesignerAssemblies.Add(extAsm);
+
+				MyDesignerModel.Instance.DesignSurface.LoadDesigner(xmlReader, loadSettings);
 			}
 
 			//We want to supply our own implementation of IComponentPropertyService so we return just the properties that we want.
 			//This would probably go better in the MyDesignerModel class, but have to wait until after the DesignContext has been created.
 			MyDesignerModel.Instance.DesignSurface.DesignContext.Services.AddOrReplaceService(typeof(IComponentPropertyService), new MyComponentPropertyService());
+
+			//We want to supply our own implementation of IOutlineNodeNameService so the outline view has something like widget type and name & not the view typename.
+			//This would probably go better in the MyDesignerModel class, but have to wait until after the DesignContext has been created.
+			MyDesignerModel.Instance.DesignSurface.DesignContext.Services.AddOrReplaceService(typeof(IOutlineNodeNameService), new MyOutlineNodeNameService());
+
+			//Can I replace the quick operation menu extension?
+
+			//Tell the model to subscribe to some component service events (need to figure out the best time to do this)
+			//MyDesignerModel.Instance.SubscribeToComponentEvents();
+
+			//Also, we want to create a root outline node in the model for the outline view control. There won't be a root node in the design context until we've loaded some xaml, 
+			//so we'll do it manually right here. This also would be better in the model after some kind of load/new operation/event that let's up know that the design surface has 
+			//a document.
+			MyDesignerModel.Instance.OutlineRoot = OutlineNode.Create(MyDesignerModel.Instance.DesignSurface.DesignContext.RootItem);
 		}
 	}
 }

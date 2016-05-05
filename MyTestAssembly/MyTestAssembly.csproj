@@ -45,8 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyComponentPropertyService.cs" />
+    <Compile Include="MyCreateComponentTool.cs" />
     <Compile Include="MyDesignerModel.cs" />
+    <Compile Include="MyDisplaySizeExtension.cs" />
     <Compile Include="MyFooEnum.cs" />
+    <Compile Include="MyOutlineNodeNameService.cs" />
+    <Compile Include="MyShowInDesignerAttribute.cs" />
     <Compile Include="MyWidgetHolderView.xaml.cs">
       <DependentUpon>MyWidgetHolderView.xaml</DependentUpon>
     </Compile>

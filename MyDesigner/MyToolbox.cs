@@ -16,8 +16,10 @@ namespace MyDesigner
 			MyFooNodes = new ObservableCollection<MyFooNode>();
 
 			//For poc, just add a node to our collection for each member of MyFooEnum.
-			MyFooNodes.Add(new MyFooNode() { FooType = MyFooEnum.ButtonWidget });
-			MyFooNodes.Add(new MyFooNode() { FooType = MyFooEnum.TextWidget });
+			MyFooNodes.Add(new MyFooNode() { FooType = MyFooEnum.MyWidget, Id = 0 });
+			MyFooNodes.Add(new MyFooNode() { FooType = MyFooEnum.MyWidget, Id = 1 });
+			MyFooNodes.Add(new MyFooNode() { FooType = MyFooEnum.MyWidget, Id = 2 });
+			MyFooNodes.Add(new MyFooNode() { FooType = MyFooEnum.TextWidget, Id = 0 });
 		}
 
 		public static MyToolbox Instance = new MyToolbox();
@@ -33,8 +35,10 @@ namespace MyDesigner
 		{
 			get
 			{
-				return this.FooType.ToString();
+				return this.FooType.ToString() + " - " + this.Id.ToString();
 			}
 		}
+
+		public int Id { get; set; }
 	}
 }

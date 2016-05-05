@@ -3,27 +3,48 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:Outline="clr-namespace:ICSharpCode.WpfDesign.Designer.OutlineView;assembly=ICSharpCode.WpfDesign.Designer"
         xmlns:local="clr-namespace:MyDesigner"
 		xmlns:sd="http://sharpdevelop.net"
+		xmlns:Designer="clr-namespace:ICSharpCode.WpfDesign.Designer;assembly=ICSharpCode.WpfDesign.Designer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="600" Width="1000">
+
+	<Window.Resources>
+		<Style TargetType="{x:Type Designer:DesignSurface}">
+			
+		</Style>
+	</Window.Resources>
+	
 	<Grid x:Name="MainGrid">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="2*"/>
 			<ColumnDefinition Width="3*"/>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="2*"/>
 		</Grid.ColumnDefinitions>
 
-		<StackPanel Grid.Column="0" 
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<StackPanel Grid.Row="0" 
 					Orientation="Vertical"
 					HorizontalAlignment="Stretch"
 					VerticalAlignment="Stretch">
-			<TextBlock Text="Toolbox"/>
+				<TextBlock Text="Toolbox"/>
 
-			<local:MyToolboxView VerticalAlignment="Stretch">
+				<local:MyToolboxView VerticalAlignment="Stretch">
 
-			</local:MyToolboxView>
-		</StackPanel>
+				</local:MyToolboxView>
+			</StackPanel>
+			
+			<!-- outline control -->
+			<Outline:Outline Grid.Row="1"
+							 Root="{Binding OutlineRoot}"/>
+		</Grid>
+		
 
 		<Grid x:Name="DesignSurfaceGrid"
 			  Grid.Column="1">

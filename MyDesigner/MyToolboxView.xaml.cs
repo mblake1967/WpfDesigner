@@ -57,13 +57,21 @@ namespace MyDesigner
 				//Get the Type we want to use for the MyFooNode being dragged out here.
 				Type type = GetTypeForFooType(node.FooType);
 
-				var tool = new CreateComponentTool(type);
+				//var tool = new CreateComponentTool(type);
+
+				//We can use an override of CreateComponentTool, but we have to wrap it in a DataObject and specify
+				//the format by type where type is CreateComponentTool. The event handlers in CreateComponentTool
+				//won't work otherwise because of a single GetData call. The drag doesn't work in that case.
+				var tool = new MyCreateComponentTool(type, node.Id);
+				DataObject dataObject = new DataObject(typeof(CreateComponentTool), tool);
+
 				if (MyDesignerModel.Instance.DesignSurface != null)
 				{
 					MyDesignerModel.Instance.DesignSurface.DesignContext.Services.Tool.CurrentTool = tool;
 					if (drag)
 					{
-						DragDrop.DoDragDrop(this, tool, DragDropEffects.Copy);
+						//DragDrop.DoDragDrop(this, tool, DragDropEffects.Copy);
+						DragDrop.DoDragDrop(this, dataObject, DragDropEffects.Copy);
 					}
 				}
 			}
@@ -73,9 +81,9 @@ namespace MyDesigner
 		{
 			Type retVal = null;
 
-			if (fooType == MyFooEnum.ButtonWidget)
+			if (fooType == MyFooEnum.MyWidget)
 			{
-				retVal = typeof(MyWidgetHolderView);
+				retVal = typeof(MyWidgetView);
 			}
 			else if (fooType == MyFooEnum.TextWidget)
 				retVal = typeof(TextBlock);

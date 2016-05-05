@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.WpfDesign.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,18 @@ namespace MyTestAssembly
 	{
 		public MyWidgetHolderView()
 		{
+			DataContext = this;
 			InitializeComponent();
 		}
-	}
+
+		private static readonly DependencyProperty HolderBackgroundProperty = DependencyProperty.Register("HolderBackground", typeof(SolidColorBrush), typeof(MyWidgetHolderView),
+			new PropertyMetadata(Brushes.Cyan));
+
+		[MyShowInDesigner()]
+		public SolidColorBrush HolderBackground
+		{
+			get { return GetValue(MyWidgetHolderView.HolderBackgroundProperty) as SolidColorBrush; }
+			set { SetValue(MyWidgetHolderView.HolderBackgroundProperty, value); }
+		}
+	}	
 }
